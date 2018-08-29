@@ -3,7 +3,7 @@ RUN apk --no-cache add bash gcc g++ make wget tar perl zlib zlib-dev coreutils
 RUN mkdir -p /tmp/workspace/sources
 RUN wget "https://www.openssl.org/source/openssl-1.0.2p.tar.gz" -qO- | \
     tar --extract --gzip --directory=/tmp/workspace/sources/
-RUN wget "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-7.7p1.tar.gz" -qO- | \
+RUN wget "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-7.8p1.tar.gz" -qO- | \
     tar --extract --gzip --directory=/tmp/workspace/sources/
 RUN apk del libressl2.7-libcrypto libressl2.7-libtls libressl2.7-libssl wget ssl_client apk-tools
 RUN cd /tmp/workspace/sources/openssl-1.0.2p && \
@@ -12,7 +12,7 @@ RUN cd /tmp/workspace/sources/openssl-1.0.2p && \
              --openssldir=/etc/ssl --libdir=lib \
              shared threads && \
     make depend && make && make install
-RUN cd /tmp/workspace/sources/openssh-7.7p1 && \
+RUN cd /tmp/workspace/sources/openssh-7.8p1 && \
     ./configure --sysconfdir=/etc/ssh \
                --libexecdir=/usr/lib/misc \
                --datadir=/usr/share/openssh \
@@ -26,7 +26,7 @@ RUN apk --no-cache add bash gcc g++ make wget tar perl zlib zlib-dev coreutils
 RUN mkdir -p /tmp/workspace/sources
 RUN wget "https://www.openssl.org/source/old/1.0.2/openssl-1.0.2o.tar.gz" -qO- | \
     tar --extract --gzip --directory=/tmp/workspace/sources/
-RUN wget "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-7.7p1.tar.gz" -qO- | \
+RUN wget "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-7.8p1.tar.gz" -qO- | \
     tar --extract --gzip --directory=/tmp/workspace/sources/
 RUN apk del libressl2.7-libcrypto libressl2.7-libtls libressl2.7-libssl wget ssl_client apk-tools
 RUN cd /tmp/workspace/sources/openssl-1.0.2o && \
@@ -35,7 +35,7 @@ RUN cd /tmp/workspace/sources/openssl-1.0.2o && \
              --openssldir=/etc/ssl --libdir=lib \
              shared threads && \
     make depend && make && make install
-RUN cd /tmp/workspace/sources/openssh-7.7p1 && \
+RUN cd /tmp/workspace/sources/openssh-7.8p1 && \
     ./configure --sysconfdir=/etc/ssh \
                --libexecdir=/usr/lib/misc \
                --datadir=/usr/share/openssh \
