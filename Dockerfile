@@ -49,11 +49,15 @@ RUN apk --no-cache add bash zlib coreutils grep sed
 RUN mkdir -p /tmp/workspace/openssh_openssl_1_0_2o
 COPY --from=openssl_1_0_2o /usr/local/bin/ssh /tmp/workspace/openssh_openssl_1_0_2o
 COPY --from=openssl_1_0_2o /usr/local/bin/ssh-keygen /tmp/workspace/openssh_openssl_1_0_2o
+COPY --from=openssl_1_0_2o /usr/local/bin/openssl /tmp/workspace/openssh_openssl_1_0_2o
 COPY --from=openssl_1_0_2o /usr/local/lib/libcrypto.so.1.0.0 /tmp/workspace/openssh_openssl_1_0_2o
+COPY --from=openssl_1_0_2o /usr/local/lib/libssl.so.1.0.0 /tmp/workspace/openssh_openssl_1_0_2o
 RUN mkdir -p /tmp/workspace/openssh_openssl_1_0_2p
 COPY --from=openssl_1_0_2p /usr/local/bin/ssh /tmp/workspace/openssh_openssl_1_0_2p
 COPY --from=openssl_1_0_2p /usr/local/bin/ssh-keygen /tmp/workspace/openssh_openssl_1_0_2p
+COPY --from=openssl_1_0_2p /usr/local/bin/openssl /tmp/workspace/openssh_openssl_1_0_2p
 COPY --from=openssl_1_0_2p /usr/local/lib/libcrypto.so.1.0.0 /tmp/workspace/openssh_openssl_1_0_2p
+COPY --from=openssl_1_0_2p /usr/local/lib/libssl.so.1.0.0 /tmp/workspace/openssh_openssl_1_0_2p
 COPY find_key_failure.sh /tmp/workspace
 COPY find_misleading_msg.sh /tmp/workspace
 COPY tester.sh /tmp/workspace

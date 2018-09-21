@@ -11,8 +11,10 @@ for ((i=0;i<2000;++i)); do
     if env DISPLAY= SSH_ASKPASS=/bin/false ssh-keygen -y -f testkey 0<&- 2>&1 | grep -q invalid; then
         echo -n "note: running version "; ssh -V
         echo "[attempt #$i] found a broken key (passphrase = 12345678):"
+        echo "12345678" > passphrase
         echo; set -o xtrace;
         env DISPLAY= SSH_ASKPASS=/bin/false ssh-keygen -y -f testkey 0<&- 2>&1 && :
+        openssl ec -noout -text -in testkey -passin "file:./passphrase" && :
         set +o xtrace; echo
         cat testkey
         exit 0
