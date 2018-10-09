@@ -23,4 +23,4 @@ for ((i=0;i<2000;++i)); do
     fi
     rm ./testkey*
 done
-echo "No broken keys in $i tries"
+echo "[!] no misleading key load messages in $i tries"
