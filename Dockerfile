@@ -12,7 +12,10 @@ RUN cd /tmp/workspace/sources/openssl-1.0.2p && \
              --openssldir=/etc/ssl --libdir=lib \
              shared threads && \
     make depend && make && make install
+RUN mkdir -p /tmp/workspace/patches
+COPY patches/ /tmp/workspace/patches/
 RUN cd /tmp/workspace/sources/openssh-7.8p1 && \
+    cat /tmp/workspace/patches/edbb6febccee084d212fdc0cb05b40cb1c646ab1.patch | patch -p1 && \
     ./configure --sysconfdir=/etc/ssh \
                --libexecdir=/usr/lib/misc \
                --datadir=/usr/share/openssh \
@@ -35,7 +38,10 @@ RUN cd /tmp/workspace/sources/openssl-1.0.2o && \
              --openssldir=/etc/ssl --libdir=lib \
              shared threads && \
     make depend && make && make install
+RUN mkdir -p /tmp/workspace/patches
+COPY patches/ /tmp/workspace/patches/
 RUN cd /tmp/workspace/sources/openssh-7.8p1 && \
+    cat /tmp/workspace/patches/edbb6febccee084d212fdc0cb05b40cb1c646ab1.patch | patch -p1 && \
     ./configure --sysconfdir=/etc/ssh \
                --libexecdir=/usr/lib/misc \
                --datadir=/usr/share/openssh \

@@ -1,0 +1,44 @@
+From edbb6febccee084d212fdc0cb05b40cb1c646ab1 Mon Sep 17 00:00:00 2001
+From: "djm@openbsd.org" <djm@openbsd.org>
+Date: Tue, 9 Oct 2018 05:42:23 +0000
+Subject: [PATCH] upstream: Treat all PEM_read_bio_PrivateKey() errors when a
+ passphrase
+
+is specified as "incorrect passphrase" instead of trying to choose between
+that and "invalid format".
+
+libcrypto can return ASN1 parsing errors rather than the expected
+decrypt error in certain infrequent cases when trying to decrypt/parse
+PEM private keys when supplied with an invalid passphrase.
+
+Report and repro recipe from Thomas Deutschmann in bz#2901
+
+ok markus@
+
+OpenBSD-Commit-ID: b1d4cd92395f9743f81c0d23aab2524109580870
+---
+ sshkey.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/sshkey.c b/sshkey.c
+index 63c01ea67..e1e882b72 100644
+--- a/sshkey.c
++++ b/sshkey.c
+@@ -3831,7 +3831,16 @@
+ 	clear_libcrypto_errors();
+ 	if ((pk = PEM_read_bio_PrivateKey(bio, NULL, NULL,
+ 	    (char *)passphrase)) == NULL) {
+-		r = convert_libcrypto_error();
++	       /*
++		* libcrypto may return various ASN.1 errors when attempting
++		* to parse a key with an incorrect passphrase.
++		* Treat all format errors as "incorrect passphrase" if a
++		* passphrase was supplied.
++		*/
++		if (passphrase != NULL && *passphrase != '\0')
++			r = SSH_ERR_KEY_WRONG_PASSPHRASE;
++		else
++			r = convert_libcrypto_error();
+ 		goto out;
+ 	}
+ 	if (pk->type == EVP_PKEY_RSA &&
